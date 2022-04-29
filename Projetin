@@ -1,0 +1,100 @@
+#include <LiquidCrystal.h>  
+LiquidCrystal lcd(12,11,10,9,7,6,5);
+int led_A = LOW;    
+void setup()
+{
+  Serial.begin(9600);        
+  pinMode(8,OUTPUT);
+  pinMode(5,OUTPUT);
+  pinMode(2,INPUT_PULLUP);  
+    lcd.begin(16,2);
+  lcd.print("Prog.2>05-07-21");
+  lcd.setCursor(6,1);
+  lcd.print("T.41");
+  delay(4000);
+  lcd.clear();
+ 
+  byte C[] = {
+  B00011,
+  B00100,
+  B01000,
+  B01000,
+  B01000,
+  B00100,
+  B00011,
+    B00000};
+ 
+    byte r[] = {
+  B00011,
+  B00111,
+  B01111,
+  B01111,
+  B01111,
+  B00111,
+  B00011,
+    B00000
+  };
+    byte u[] = {
+  B11000,
+  B00100,
+  B00010,
+  B00010,
+  B00010,
+  B00100,
+  B11000,
+  B00000
+
+
+};
+byte H[] = {
+  B11000,
+  B11100,
+  B11110,
+  B11110,
+  B11110,
+  B11100,
+  B11000,
+  B00000
+};
+ lcd.createChar(1,C);
+   lcd.createChar(2,r);
+   lcd.createChar(3,u);
+   lcd.createChar(4,H);
+}
+
+void loop()
+{
+  int bot_A = digitalRead(2);
+ 
+ 
+   
+  if (bot_A == LOW)
+  {
+   
+    led_A = !led_A;
+    digitalWrite(8,led_A);
+    delay(400);    
+  }
+  if (led_A == HIGH)
+      {
+         
+      lcd.setCursor(0,0);
+      lcd.println("---Led ligado---");
+      lcd.setCursor(7,1);
+      lcd.write(2);
+      lcd.write(4);
+     
+      delay(400);
+      }
+   
+   if(led_A == LOW)
+      {
+         Serial.println("Led Desligado");
+     lcd.setCursor(0,0);
+     lcd.println("--Led desligado--");
+      lcd.setCursor(7,1);
+      lcd.write(1);
+      lcd.write(3);
+     delay(400);
+      }
+}
